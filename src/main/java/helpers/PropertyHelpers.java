@@ -58,7 +58,7 @@ public class PropertyHelpers {
                 file.close();
                 out = new FileOutputStream(System.getProperty("user.dir") + relPropertiesFilePathDefault);
             }
-            //Ghi vào cùng file Prop với file lấy ra
+
             out = new FileOutputStream(linkFile);
             System.out.println(linkFile);
             properties.setProperty(key, value);

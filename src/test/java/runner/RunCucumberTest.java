@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
         features = "src/test/resources/features",
         glue = {"stepsdef"},
         plugin = {"pretty", "html:target/cucumber-html-report.html"},
-        tags = "@login1"
+        tags = "@login3"
 )
 @Test
 public class RunCucumberTest extends AbstractTestNGCucumberTests {

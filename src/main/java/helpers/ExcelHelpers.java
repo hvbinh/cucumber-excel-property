@@ -38,14 +38,12 @@ public class ExcelHelpers {
             fis = new FileInputStream(ExcelPath);
             workbook = WorkbookFactory.create(fis);
             sheet = workbook.getSheet(SheetName);
-            //sh = wb.getSheetAt(0); //0 - index of 1st sheet
             if (sheet == null) {
                 sheet = workbook.createSheet(SheetName);
             }
 
             this.excelFilePath = ExcelPath;
 
-            //adding all the column header names to the map 'columns'
             sheet.getRow(0).forEach(cell -> {
                 columns.put(cell.getStringCellValue(), cell.getColumnIndex());
             });
@@ -83,17 +81,15 @@ public class ExcelHelpers {
         }
     }
 
-    //Gọi ra hàm này nè
+
     public String getCellData(String columnName, int rownum) {
         return getCellData(rownum, columns.get(columnName));
     }
 
-    //Get last row number (lấy vị trí dòng cuối cùng tính từ 0)
     public int getLastRowNum() {
         return sheet.getLastRowNum();
     }
 
-    //Lấy số dòng có data đang sử dụng
     public int getPhysicalNumberOfRows() {
         return sheet.getPhysicalNumberOfRows();
     }
@@ -108,8 +104,6 @@ public class ExcelHelpers {
         }
     }
 
-    // Write data to excel sheet
-    //set by column index
     public void setCellData(String text, int rowNumber, int colNumber) {
         try {
             row = sheet.getRow(rowNumber);
@@ -149,7 +143,6 @@ public class ExcelHelpers {
         }
     }
 
-    //set by column name
     public void setCellData(String text, int rowNumber, String columnName) {
         try {
             row = sheet.getRow(rowNumber);
@@ -190,23 +183,17 @@ public class ExcelHelpers {
     }
 
 
-    //Hàm này dùng cho trường hợp ít Field trong File Excel
     public Object[][] getExcelData(String fileName, String sheetName) {
         Object[][] data = null;
         Workbook workbook = null;
         try {
-            // load the file
             FileInputStream fis = new FileInputStream(fileName);
             String fileExtensionName = fileName.substring(fileName.indexOf("."));
 
-            // load the workbook
-            //workbook = new HSSFWorkbook(fis); //read file excel .xls
-            workbook = new XSSFWorkbook(fis); //read file excel .xlsx
+            workbook = new XSSFWorkbook(fis);
 
-            // load the sheet
             Sheet sheet = workbook.getSheet(sheetName);
 
-            // load the row
             Row row = sheet.getRow(0);
 
 
@@ -218,13 +205,11 @@ public class ExcelHelpers {
             Cell cell;
             data = new Object[noOfRows - 1][noOfCols];
 
-            //Vòng lặp FOR chạy từ 1 để bỏ dòng tiêu đề (dòng tiêu đề là 0)
             for (int i = 1; i < noOfRows; i++) {
                 for (int j = 0; j < noOfCols; j++) {
                     row = sheet.getRow(i);
                     cell = row.getCell(j);
 
-                    //Này dùng để xác định kiểu dữ liệu từ ô trong excel rồi chuển về String luôn cho tiện đọc
                     switch (cell.getCellType()) {
                         case STRING:
                             data[i - 1][j] = cell.getStringCellValue();
@@ -248,7 +233,6 @@ public class ExcelHelpers {
         return data;
     }
 
-    //Hàm này dùng cho trường hợp nhiều Field trong File Excel
     public Object[][] getExcelDataHashTable(String excelPath, String sheetName, int startRow, int endRow) {
         System.out.println("Excel Path: " + excelPath);
         Object[][] data = null;
